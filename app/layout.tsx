@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn("antialiased", geistSans.variable, geistMono.variable)}
       >
         {children}
       </body>
