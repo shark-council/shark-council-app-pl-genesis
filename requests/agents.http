@@ -1,0 +1,6 @@
+# Send a message to the sentiment analyst
+POST http://localhost:3000/api/agents/sentiment-analyst
+
+{
+    "message": "Hello, how are you doing today?"
+}
