@@ -20,5 +20,5 @@
 ## 📄 Template for .env file
 
 ```
-
+OPEN_ROUTER_API_KEY=""
 ```
