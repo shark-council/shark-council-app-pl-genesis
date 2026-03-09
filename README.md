@@ -16,3 +16,9 @@
 - Deploy the app to Vercel preview - `vercel`
 - Deploy the app to Vercel production - `vercel --prod`
 - Use ngrok - `./ngrok http --domain=first-ewe-caring.ngrok-free.app 3000`
+
+## 📄 Template for .env file
+
+```
+
+```
