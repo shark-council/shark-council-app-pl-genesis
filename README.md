@@ -21,4 +21,5 @@
 
 ```
 OPEN_ROUTER_API_KEY=""
+BASE_URL=""
 ```
