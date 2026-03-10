@@ -20,6 +20,7 @@
 ## 📄 Template for .env file
 
 ```
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=""
 OPEN_ROUTER_API_KEY=""
 BASE_URL=""
 ```

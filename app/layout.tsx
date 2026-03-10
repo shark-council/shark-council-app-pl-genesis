@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { WagmiProvider } from "@/components/providers/WagmiProvider";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
@@ -33,16 +34,18 @@ export default function RootLayout({
       <body
         className={cn("antialiased", geistSans.variable, geistMono.variable)}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <div className="min-h-screen flex flex-col">
-            <div className="flex-1">{children}</div>
-            <Toaster />
-          </div>
-        </ThemeProvider>
+        <WagmiProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+            <div className="min-h-screen flex flex-col">
+              <div className="flex-1">{children}</div>
+              <Toaster />
+            </div>
+          </ThemeProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
