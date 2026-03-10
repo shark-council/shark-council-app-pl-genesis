@@ -1,7 +1,6 @@
 import { ApiResponse } from "@/types/api";
-import { DynamicTool } from "@langchain/core/tools";
 import { ChatOpenAI } from "@langchain/openai";
-import { BaseMessage, createAgent } from "langchain";
+import { BaseMessage, HumanMessage, SystemMessage } from "langchain";
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -11,130 +10,162 @@ const model = new ChatOpenAI({
   configuration: {
     baseURL: "https://openrouter.ai/api/v1",
   },
-  temperature: 0,
+  temperature: 0.7,
 });
 
-const systemPrompt = `# Role
-- You are an orchestrator for a financial analysis council called the Shark Council.
-- For every user question, you MUST consult BOTH the sentiment_analyst and technical_analyst tools before answering.
-- After receiving both analyses, synthesize their insights into a single comprehensive final answer.
-- Always use both tools before providing your final response.`;
+type AgentRole = "sentiment-analyst" | "technical-analyst";
 
-const sentimentAnalystTool = new DynamicTool({
-  name: "sentiment_analyst",
-  description:
-    "Analyzes the market sentiment of a financial topic. Call this to get a sentiment analysis perspective.",
-  func: async (input: string) => {
-    const res = await fetch(`${BASE_URL}/api/agents/sentiment-analyst`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
-    });
-    const data: ApiResponse<{ response: string }> = await res.json();
-    if (!data.isSuccess || !data.data) {
-      throw new Error("Sentiment analyst returned an error");
-    }
-    return data.data.response;
+type DebateEntry = {
+  role: AgentRole;
+  content: string;
+};
+
+type DebateRound = {
+  agent: AgentRole;
+  thinkingLabel: string;
+  instruction: string;
+};
+
+const DEBATE_ROUNDS: DebateRound[] = [
+  {
+    agent: "sentiment-analyst",
+    thinkingLabel: "Marcus is sizing up the room...",
+    instruction:
+      "Open the debate. State your position on this topic. What does the crowd say?",
   },
-});
-
-const technicalAnalystTool = new DynamicTool({
-  name: "technical_analyst",
-  description:
-    "Analyzes technical indicators and market data for a financial topic. Call this to get a technical analysis perspective.",
-  func: async (input: string) => {
-    const res = await fetch(`${BASE_URL}/api/agents/technical-analyst`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
-    });
-    const data: ApiResponse<{ response: string }> = await res.json();
-    if (!data.isSuccess || !data.data) {
-      throw new Error("Technical analyst returned an error");
-    }
-    return data.data.response;
+  {
+    agent: "technical-analyst",
+    thinkingLabel: "Ray is pulling up the charts...",
+    instruction:
+      "Respond to Marcus directly. What does the chart say? Challenge his specific claims.",
   },
-});
+  {
+    agent: "sentiment-analyst",
+    thinkingLabel: "Marcus is firing back...",
+    instruction:
+      "Push back on Ray's specific technical arguments. Why is he missing the bigger picture?",
+  },
+  {
+    agent: "technical-analyst",
+    thinkingLabel: "Ray is checking the data one more time...",
+    instruction:
+      "Final word. Stand your ground or concede specific points — but be clear about the risk here.",
+  },
+];
 
-function createOrchestratorAgent() {
-  return createAgent({
-    model,
-    tools: [sentimentAnalystTool, technicalAnalystTool],
-    systemPrompt,
+const VERDICT_SYSTEM_PROMPT = `You are the Shark Council Orchestrator — a sharp, decisive risk arbiter.
+You have just witnessed a live debate between Marcus (Sentiment Analyst) and Ray (Technical Analyst).
+Deliver a clear verdict: who made the stronger case, what is the risk verdict, and what should the trader do.
+Keep it to 3-5 sentences. Be authoritative. No hedging.`;
+
+async function callAgent(role: AgentRole, prompt: string): Promise<string> {
+  const res = await fetch(`${BASE_URL}/api/agents/${role}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: prompt }),
   });
+  const data: ApiResponse<{ response: string }> = await res.json();
+  if (!data.isSuccess || !data.data) {
+    throw new Error(`${role} returned an error`);
+  }
+  return data.data.response;
+}
+
+function buildAgentPrompt(
+  userTopic: string,
+  history: DebateEntry[],
+  instruction: string,
+): string {
+  let prompt = `Topic under debate: "${userTopic}"\n\n`;
+  if (history.length > 0) {
+    prompt += "Debate so far:\n";
+    for (const entry of history) {
+      const name =
+        entry.role === "sentiment-analyst"
+          ? "Marcus (Sentiment)"
+          : "Ray (Technical)";
+      prompt += `${name}: ${entry.content}\n\n`;
+    }
+  }
+  prompt += `Your move: ${instruction}`;
+  return prompt;
+}
+
+function buildVerdictPrompt(userTopic: string, history: DebateEntry[]): string {
+  let transcript = `Topic: "${userTopic}"\n\nDebate transcript:\n`;
+  for (const entry of history) {
+    const name =
+      entry.role === "sentiment-analyst"
+        ? "Marcus (Sentiment)"
+        : "Ray (Technical)";
+    transcript += `${name}: ${entry.content}\n\n`;
+  }
+  transcript += "Deliver your verdict.";
+  return transcript;
+}
+
+function extractUserTopic(messages: BaseMessage[]): string {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i]._getType() === "human") {
+      const content = messages[i].content;
+      return typeof content === "string" ? content : JSON.stringify(content);
+    }
+  }
+  return "Unknown topic";
 }
 
 export async function* streamOrchestrator(
   messages: BaseMessage[],
 ): AsyncGenerator<string> {
-  const agent = createOrchestratorAgent();
+  const userTopic = extractUserTopic(messages);
+  const debateHistory: DebateEntry[] = [];
 
-  let rootRunId: string | null = null;
-  let finalContent: string | null = null;
-
-  for await (const event of agent.streamEvents(
-    { messages },
-    { version: "v2" },
-  )) {
-    // The first on_chain_start is the root graph run
-    if (event.event === "on_chain_start" && rootRunId === null) {
-      rootRunId = event.run_id;
-    }
-
-    // Orchestrator is calling a sub-agent tool
-    if (event.event === "on_tool_start") {
-      const agentLabel =
-        event.name === "sentiment_analyst"
-          ? "Sentiment Analyst"
-          : "Technical Analyst";
-      yield `data: ${JSON.stringify({
-        role: "orchestrator",
-        type: "tool-call",
-        content: `Consulting ${agentLabel}...`,
-      })}\n\n`;
-    }
-
-    // Sub-agent tool finished — emit its response
-    if (event.event === "on_tool_end") {
-      const role =
-        event.name === "sentiment_analyst"
-          ? "sentiment-analyst"
-          : "technical-analyst";
-      const output = event.data.output;
-      // output may be a ToolMessage object or a plain string
-      const content =
-        typeof output === "string"
-          ? output
-          : typeof output?.content === "string"
-            ? output.content
-            : JSON.stringify(output);
-      yield `data: ${JSON.stringify({ role, type: "message", content })}\n\n`;
-    }
-
-    // Capture the final orchestrator answer from the root chain end
-    if (event.event === "on_chain_end" && event.run_id === rootRunId) {
-      const output = event.data?.output;
-      if (output?.messages) {
-        const msgs = output.messages as BaseMessage[];
-        for (let i = msgs.length - 1; i >= 0; i--) {
-          if (msgs[i]._getType() === "ai") {
-            const content = msgs[i].content;
-            finalContent =
-              typeof content === "string" ? content : JSON.stringify(content);
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  if (finalContent) {
+  // Run the debate rounds sequentially
+  for (const round of DEBATE_ROUNDS) {
     yield `data: ${JSON.stringify({
       role: "orchestrator",
-      type: "final",
-      content: finalContent,
+      type: "tool-call",
+      content: round.thinkingLabel,
+    })}\n\n`;
+
+    const prompt = buildAgentPrompt(
+      userTopic,
+      debateHistory,
+      round.instruction,
+    );
+    const response = await callAgent(round.agent, prompt);
+
+    debateHistory.push({ role: round.agent, content: response });
+
+    yield `data: ${JSON.stringify({
+      role: round.agent,
+      type: "message",
+      content: response,
     })}\n\n`;
   }
+
+  // Orchestrator delivers the verdict
+  yield `data: ${JSON.stringify({
+    role: "orchestrator",
+    type: "tool-call",
+    content: "The Council deliberates...",
+  })}\n\n`;
+
+  const verdictPrompt = buildVerdictPrompt(userTopic, debateHistory);
+  const verdictResponse = await model.invoke([
+    new SystemMessage(VERDICT_SYSTEM_PROMPT),
+    new HumanMessage(verdictPrompt),
+  ]);
+  const verdict =
+    typeof verdictResponse.content === "string"
+      ? verdictResponse.content
+      : JSON.stringify(verdictResponse.content);
+
+  yield `data: ${JSON.stringify({
+    role: "orchestrator",
+    type: "final",
+    content: verdict,
+  })}\n\n`;
 
   yield `data: [DONE]\n\n`;
 }
