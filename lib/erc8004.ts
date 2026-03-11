@@ -1,4 +1,4 @@
-import { RegistrationFile, SDK } from "agent0-sdk";
+import { AgentSummary, Feedback, RegistrationFile, SDK } from "agent0-sdk";
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
@@ -25,10 +25,60 @@ export async function registerErc8004Agent(
   return registrationFile;
 }
 
+export async function giveErc8004AgentFeedback(
+  agentId: string,
+  value: number,
+): Promise<Feedback> {
+  console.log("[ERC-8004] Giving feedback to agent...");
+
+  const sdk = getAgent0Sdk();
+  const tx = await sdk.giveFeedback(agentId, value);
+  console.log(`[ERC-8004] TX: ${tx.hash}`);
+
+  const { result: feedback } = await tx.waitConfirmed();
+  console.log(`[ERC-8004] Feedback ID: ${feedback.id}`);
+
+  return feedback;
+}
+
+export async function getErc8004Agents(): Promise<AgentSummary[]> {
+  console.log("[ERC-8004] Getting agents...");
+
+  const sdk = getAgent0Sdk();
+  const agentSummaries = await sdk.searchAgents({
+    owners: [process.env.ERC8004_OWNER_ADDRESS as string],
+  });
+  console.log(`[ERC-8004] Found ${agentSummaries.length} agents`);
+
+  return agentSummaries;
+}
+
+export async function getErc8004AgentReputationSummary(
+  agentId: string,
+): Promise<{ count: number; averageValue: number }> {
+  console.log("[ERC-8004] Getting agent reputation summary...");
+
+  const sdk = getAgent0Sdk();
+  const { count, averageValue } = await sdk.getReputationSummary(agentId);
+  console.log(
+    `[ERC-8004] Agent ${agentId} has ${count} feedback entries with an average value of ${averageValue}`,
+  );
+
+  return { count, averageValue };
+}
+
+export function getErc8004AgentExplorerLink(
+  agentId?: string,
+): string | undefined {
+  return agentId
+    ? `${erc8004Config.explorer}/${agentId.split(":").pop()}`
+    : undefined;
+}
+
 function getAgent0Sdk(): SDK {
   return new SDK({
     chainId: erc8004Config.chain.id,
     rpcUrl: erc8004Config.chain.rpcUrls.default.http[0] as string,
-    privateKey: process.env.ERC8004_PRIVATE_KEY,
+    privateKey: process.env.ERC8004_OWNER_PRIVATE_KEY,
   });
 }
