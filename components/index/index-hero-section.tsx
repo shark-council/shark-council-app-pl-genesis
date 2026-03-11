@@ -34,7 +34,7 @@ export function IndexHeroSection(props: { className?: ClassValue }) {
           </Link>
         </Button>
         <Button variant="secondary" size="lg" asChild>
-          <Link href="/sharks/new">
+          <Link href="/agents/new">
             <BotIcon /> List a Shark
           </Link>
         </Button>
