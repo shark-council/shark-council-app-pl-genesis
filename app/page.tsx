@@ -1,7 +1,7 @@
-import { IndexActivitySection } from "@/components/index/sections/index-activity-section";
-import { IndexAgentsSection } from "@/components/index/sections/index-agents-section";
-import { IndexHeroSection } from "@/components/index/sections/index-hero-section";
-import { IndexTechnologiesSection } from "@/components/index/sections/index-technologies-section";
+import { IndexActivitySection } from "@/components/index/index-activity-section";
+import { IndexAgentsSection } from "@/components/index/index-agents-section";
+import { IndexHeroSection } from "@/components/index/index-hero-section";
+import { IndexTechnologiesSection } from "@/components/index/index-technologies-section";
 import { Separator } from "@/components/ui/separator";
 
 export default function IndexPage() {
