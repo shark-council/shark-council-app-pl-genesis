@@ -1,5 +1,5 @@
 export const appConfig = {
-  title: "Shark Council",
+  name: "Shark Council",
   description:
     "Stress-test your crypto trade ideas through live debates between AI agents for actionable risk verdicts and instant DEX execution",
   developer: {

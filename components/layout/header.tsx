@@ -23,7 +23,7 @@ export function Header() {
             />
           </div>
           <div>
-            <p className="text-foreground font-bold">{appConfig.title}</p>
+            <p className="text-foreground font-bold">{appConfig.name}</p>
             <p className="text-sm text-muted-foreground">Prototype</p>
           </div>
         </Link>

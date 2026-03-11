@@ -5,9 +5,10 @@ import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider as BaseWagmiProvider } from "wagmi";
 import { flowEvm } from "@/lib/chains";
+import { appConfig } from "@/config/app";
 
 const config = getDefaultConfig({
-  appName: "Shark Council",
+  appName: appConfig.name,
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string,
   chains: [flowEvm],
   ssr: true,
