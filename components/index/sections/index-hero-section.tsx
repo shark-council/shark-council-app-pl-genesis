@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
+import { BotIcon, MessagesSquareIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,11 +28,15 @@ export function IndexHeroSection(props: { className?: ClassValue }) {
       </h4>
       {/* Buttons */}
       <div className="flex flex-row items-center justify-center gap-2 mt-4">
-        <Button variant="default" asChild>
-          <Link href="/councils/new">Consult the Council</Link>
+        <Button variant="default" size="lg" asChild>
+          <Link href="/councils/new">
+            <MessagesSquareIcon /> Consult the Council
+          </Link>
         </Button>
-        <Button variant="secondary" asChild>
-          <Link href="/sharks/new">List a Shark</Link>
+        <Button variant="secondary" size="lg" asChild>
+          <Link href="/sharks/new">
+            <BotIcon /> List a Shark
+          </Link>
         </Button>
       </div>
     </div>
