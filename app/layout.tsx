@@ -1,7 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { WagmiProvider } from "@/components/providers/WagmiProvider";
+import { WagmiProvider } from "@/components/providers/wagmi-provider";
 import { appConfig } from "@/config/app";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
