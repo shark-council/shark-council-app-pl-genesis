@@ -32,6 +32,46 @@ export function IndexTechnologiesSection(props: { className?: ClassValue }) {
             <ItemTitle>Storacha</ItemTitle>
           </ItemContent>
         </Item>
+        <Item variant="outline">
+          <ItemMedia variant="icon">
+            <Avatar className="size-10">
+              <AvatarImage src="/images/agent0.png" />
+            </Avatar>
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Agent0</ItemTitle>
+          </ItemContent>
+        </Item>
+        <Item variant="outline">
+          <ItemMedia variant="icon">
+            <Avatar className="size-10">
+              <AvatarImage src="/images/erc-8004.png" />
+            </Avatar>
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>ERC-8004</ItemTitle>
+          </ItemContent>
+        </Item>
+        <Item variant="outline">
+          <ItemMedia variant="icon">
+            <Avatar className="size-10">
+              <AvatarImage src="/images/langchain.png" />
+            </Avatar>
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>LangChain</ItemTitle>
+          </ItemContent>
+        </Item>
+        <Item variant="outline">
+          <ItemMedia variant="icon">
+            <Avatar className="size-10">
+              <AvatarImage src="/images/openrouter.png" />
+            </Avatar>
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>OpenRouter</ItemTitle>
+          </ItemContent>
+        </Item>
       </div>
     </div>
   );
