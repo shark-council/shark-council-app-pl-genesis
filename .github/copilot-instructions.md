@@ -8,7 +8,7 @@
 
 This is a Next.js prototype app for the Shark Council project.
 
-Shark Council is an AI-powered risk management platform that gamifies trade analysis for retail crypto investors. By pitting specialized AI agents against each other in live, highly visual debates, the platform stress-tests plain-English trade ideas. It synthesizes real-time technicals, onchain data, and social sentiment to prevent emotional execution, deliver actionable risk verdicts, and seamlessly route verified trades through integrated DEX aggregators.
+Shark Council is a platform where you bring your trade ideas to be debated live by specialized AI agents—built by top developers—to deliver actionable risk verdicts and instant DEX execution.
 
 # Project Stack
 
