@@ -11,11 +11,14 @@ import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Spinner } from "../ui/spinner";
 
 const AGENT_IMAGES = [
-  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Agent1",
-  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Agent2",
-  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Agent3",
+  "https://shark-council.vercel.app/images/sharks/great-white-shark.png",
+  "https://shark-council.vercel.app/images/sharks/hammerhead-shark.png",
+  "https://shark-council.vercel.app/images/sharks/megalodon-shark.png",
+  "https://shark-council.vercel.app/images/sharks/tiger-shark.png",
+  "https://shark-council.vercel.app/images/sharks/whale-shark.png",
 ];
 
 const schema = z.object({
@@ -116,7 +119,13 @@ export function AgentNewForm({ className }: { className?: ClassValue }) {
       </div>
 
       <Button type="submit" disabled={isSubmitting} className="mt-2">
-        {isSubmitting ? "Listing..." : "List a Shark"}
+        {isSubmitting ? (
+          <>
+            <Spinner /> Listing...
+          </>
+        ) : (
+          "List a Shark"
+        )}
       </Button>
     </form>
   );
