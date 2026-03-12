@@ -29,32 +29,32 @@ type DebateRound = {
 const DEBATE_ROUNDS: DebateRound[] = [
   {
     agent: "sentiment-analyst",
-    thinkingLabel: "Marcus is sizing up the room...",
+    thinkingLabel: "Shark Marcus is sizing up the room...",
     instruction:
       "Open the debate. State your position on this topic. What does the crowd say?",
   },
   {
     agent: "technical-analyst",
-    thinkingLabel: "Ray is pulling up the charts...",
+    thinkingLabel: "Shark Ray is pulling up the charts...",
     instruction:
-      "Respond to Marcus directly. What does the chart say? Challenge his specific claims.",
+      "Respond to Shark Marcus directly. What does the chart say? Challenge his specific claims.",
   },
   {
     agent: "sentiment-analyst",
-    thinkingLabel: "Marcus is firing back...",
+    thinkingLabel: "Shark Marcus is firing back...",
     instruction:
-      "Push back on Ray's specific technical arguments. Why is he missing the bigger picture?",
+      "Push back on Shark Ray's specific technical arguments. Why is he missing the bigger picture?",
   },
   {
     agent: "technical-analyst",
-    thinkingLabel: "Ray is checking the data one more time...",
+    thinkingLabel: "Shark Ray is checking the data one more time...",
     instruction:
       "Final word. Stand your ground or concede specific points — but be clear about the risk here.",
   },
 ];
 
 const VERDICT_SYSTEM_PROMPT = `You are the Shark Council Orchestrator — a sharp, decisive risk arbiter.
-You have just witnessed a live debate between Marcus (Sentiment Analyst) and Ray (Technical Analyst).
+You have just witnessed a live debate between Shark Marcus (Sentiment Analyst) and Shark Ray (Technical Analyst).
 Deliver a clear verdict: who made the stronger case, what is the risk verdict, and what should the trader do.
 Keep it to 3-5 sentences. Be authoritative. No hedging.`;
 
@@ -82,8 +82,8 @@ function buildAgentPrompt(
     for (const entry of history) {
       const name =
         entry.role === "sentiment-analyst"
-          ? "Marcus (Sentiment)"
-          : "Ray (Technical)";
+          ? "Shark Marcus (Sentiment)"
+          : "Shark Ray (Technical)";
       prompt += `${name}: ${entry.content}\n\n`;
     }
   }
@@ -96,8 +96,8 @@ function buildVerdictPrompt(userTopic: string, history: DebateEntry[]): string {
   for (const entry of history) {
     const name =
       entry.role === "sentiment-analyst"
-        ? "Marcus (Sentiment)"
-        : "Ray (Technical)";
+        ? "Shark Marcus (Sentiment)"
+        : "Shark Ray (Technical)";
     transcript += `${name}: ${entry.content}\n\n`;
   }
   transcript += "Deliver your verdict.";
