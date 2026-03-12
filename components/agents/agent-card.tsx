@@ -17,8 +17,6 @@ export function AgentCard({ agent }: { agent: AgentSummary }) {
 
   const explorerLink = `${erc8004Config.explorer}/${agent.agentId.split(":").pop()}`;
 
-  console.log({ agent });
-
   return (
     <div className="bg-card border rounded-2xl p-4">
       <div className="flex flex-row gap-4">
