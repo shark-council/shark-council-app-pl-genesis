@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
       image: z.string(),
       name: z.string(),
       description: z.string(),
+      endpoint: z.string().url(),
     });
 
     const body = await request.json();
@@ -36,12 +37,13 @@ export async function POST(request: NextRequest) {
       return createFailedApiResponse({ message: "Invalid request body" }, 400);
     }
 
-    const { image, name, description } = bodyParseResult.data;
+    const { image, name, description, endpoint } = bodyParseResult.data;
 
     const registrationFile = await registerErc8004Agent(
       image,
       name,
       description,
+      endpoint,
     );
 
     return createSuccessApiResponse(registrationFile);

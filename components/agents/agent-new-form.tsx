@@ -24,6 +24,7 @@ const AGENT_IMAGES = [
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
+  endpoint: z.string().url("Must be a valid URL"),
   image: z.string().min(1, "Please select an avatar"),
 });
 
@@ -86,6 +87,17 @@ export function AgentNewForm({ className }: { className?: ClassValue }) {
           <p className="text-sm text-destructive">
             {errors.description.message}
           </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium">Endpoint</label>
+        <Input
+          placeholder="https://your-agent-endpoint.com"
+          {...register("endpoint")}
+        />
+        {errors.endpoint && (
+          <p className="text-sm text-destructive">{errors.endpoint.message}</p>
         )}
       </div>
 

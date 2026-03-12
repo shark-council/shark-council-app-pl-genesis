@@ -1,4 +1,11 @@
-import { AgentSummary, Feedback, RegistrationFile, SDK } from "agent0-sdk";
+import {
+  AgentSummary,
+  EndpointType,
+  Feedback,
+  RegistrationFile,
+  SDK,
+  buildErc8004RegistrationJson,
+} from "agent0-sdk";
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
@@ -10,19 +17,28 @@ export function getAgent0Sdk(): SDK {
   });
 }
 
-// TODO: Add endpoint value (e.g., https://testnet.8004scan.io/agents/base-sepolia/17?tab=metadata)
 export async function registerErc8004Agent(
   image: string,
   name: string,
   description: string,
+  endpoint: string,
 ): Promise<RegistrationFile> {
   console.log("[ERC-8004] Registering agent...");
 
   const sdk = getAgent0Sdk();
   const agent = sdk.createAgent(name, description, image);
   const registrationFile = agent.getRegistrationFile();
+  registrationFile.endpoints.push({
+    type: "web" as EndpointType,
+    value: endpoint,
+    meta: { version: "2.0" },
+  });
 
-  const registrationFileString = JSON.stringify(registrationFile, null, 2);
+  const registrationJson = buildErc8004RegistrationJson(registrationFile, {
+    chainId: erc8004Config.chain.id,
+    identityRegistryAddress: sdk.identityRegistryAddress(),
+  });
+  const registrationFileString = JSON.stringify(registrationJson, null, 2);
   const { url } = await uploadContentToStoracha(registrationFileString);
 
   const tx = await agent.registerHTTP(url);
