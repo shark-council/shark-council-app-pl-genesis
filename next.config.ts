@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     "@ucanto/interface",
     "@ipld/car",
     "multiformats",
+    "agent0-sdk",
+    "helia",
+    "@libp2p/webrtc",
+    "@ipshipyard/node-datachannel",
   ],
 };
 
