@@ -26,7 +26,7 @@ export async function uploadContentToStoracha(
   console.log("[Storacha] Uploading content...");
 
   const client = await getClient();
-  const blob = new Blob([content], { type: "text/plain" });
+  const blob = new Blob([content], { type: "application/json" });
   const cid = await client.uploadFile(blob);
 
   const cidString = cid.toString();

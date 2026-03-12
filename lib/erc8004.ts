@@ -58,7 +58,7 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   const agentSummaries = await sdk.subgraphClient?.getAgents({
     where: { owner: process.env.ERC8004_OWNER_ADDRESS as string },
   });
-  console.log(`[ERC-8004] Found ${agentSummaries || [].length} agents`);
+  console.log(`[ERC-8004] Found ${(agentSummaries || []).length} agents`);
 
   return agentSummaries || [];
 }
