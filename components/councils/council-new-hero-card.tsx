@@ -14,8 +14,8 @@ export function CouncilNewHeroCard(props: { className?: ClassValue }) {
         Convene the Council
       </h2>
       <p className="text-accent-foreground">
-        Define your trade idea, select your specialized AI agents, and convene
-        the Council for a live risk verdict
+        Select your specialized AI agents, and convene the Council for a live
+        risk verdict
       </p>
     </div>
   );
