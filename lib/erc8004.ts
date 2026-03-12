@@ -2,15 +2,24 @@ import { AgentSummary, Feedback, RegistrationFile, SDK } from "agent0-sdk";
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
+export function getAgent0Sdk(): SDK {
+  return new SDK({
+    chainId: erc8004Config.chain.id,
+    rpcUrl: erc8004Config.chain.rpcUrls.default.http[0] as string,
+    privateKey: process.env.ERC8004_OWNER_PRIVATE_KEY,
+  });
+}
+
 // TODO: Add endpoint value (e.g., https://testnet.8004scan.io/agents/base-sepolia/17?tab=metadata)
 export async function registerErc8004Agent(
+  image: string,
   name: string,
   description: string,
 ): Promise<RegistrationFile> {
   console.log("[ERC-8004] Registering agent...");
 
   const sdk = getAgent0Sdk();
-  const agent = sdk.createAgent(name, description);
+  const agent = sdk.createAgent(name, description, image);
   const registrationFile = agent.getRegistrationFile();
 
   const registrationFileString = JSON.stringify(registrationFile, null, 2);
@@ -46,12 +55,12 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   console.log("[ERC-8004] Getting agents...");
 
   const sdk = getAgent0Sdk();
-  const agentSummaries = await sdk.searchAgents({
-    owners: [process.env.ERC8004_OWNER_ADDRESS as string],
+  const agentSummaries = await sdk.subgraphClient?.getAgents({
+    where: { owner: process.env.ERC8004_OWNER_ADDRESS as string },
   });
-  console.log(`[ERC-8004] Found ${agentSummaries.length} agents`);
+  console.log(`[ERC-8004] Found ${agentSummaries || [].length} agents`);
 
-  return agentSummaries;
+  return agentSummaries || [];
 }
 
 export async function getErc8004AgentReputationSummary(
@@ -66,20 +75,4 @@ export async function getErc8004AgentReputationSummary(
   );
 
   return { count, averageValue };
-}
-
-export function getErc8004AgentExplorerLink(
-  agentId?: string,
-): string | undefined {
-  return agentId
-    ? `${erc8004Config.explorer}/${agentId.split(":").pop()}`
-    : undefined;
-}
-
-function getAgent0Sdk(): SDK {
-  return new SDK({
-    chainId: erc8004Config.chain.id,
-    rpcUrl: erc8004Config.chain.rpcUrls.default.http[0] as string,
-    privateKey: process.env.ERC8004_OWNER_PRIVATE_KEY,
-  });
 }

@@ -1,8 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { AgentList } from "@/components/agents/agent-list";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 
-// TODO: Display a list of agents
 export function IndexAgentsSection(props: { className?: ClassValue }) {
   return (
     <div className={cn(props.className)}>
@@ -10,7 +9,7 @@ export function IndexAgentsSection(props: { className?: ClassValue }) {
       <p className="text-muted-foreground text-center">
         Specialized AI agents ready to debate
       </p>
-      <Skeleton className="h-8 mt-4" />
+      <AgentList className="mt-4" />
     </div>
   );
 }
