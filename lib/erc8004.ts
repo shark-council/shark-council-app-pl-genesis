@@ -2,7 +2,7 @@ import { AgentSummary, Feedback, RegistrationFile, SDK } from "agent0-sdk";
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
-// TODO: Add endpoint value
+// TODO: Add endpoint value (e.g., https://testnet.8004scan.io/agents/base-sepolia/17?tab=metadata)
 export async function registerErc8004Agent(
   name: string,
   description: string,
