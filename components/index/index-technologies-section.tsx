@@ -3,7 +3,6 @@ import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 
-// TODO: Add more technologies
 export function IndexTechnologiesSection(props: { className?: ClassValue }) {
   return (
     <div className={cn(props.className)}>
