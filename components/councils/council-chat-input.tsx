@@ -1,4 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import { useRef } from "react";
 
 export function CouncilChatInput({
@@ -25,29 +28,28 @@ export function CouncilChatInput({
   }
 
   return (
-    <div className="flex gap-2 items-end border-t border-border p-4 bg-background">
-      <textarea
+    <div className="flex gap-2 items-end pt-2">
+      <Textarea
         ref={textareaRef}
         onKeyDown={handleKeyDown}
         disabled={disabled}
-        placeholder="Ask the council... (Enter to send, Shift+Enter for newline)"
+        placeholder="Ask the council..."
         rows={2}
         className={cn(
-          "flex-1 resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm",
-          "placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring",
+          "flex-1 resize-none min-h-15",
           "disabled:cursor-not-allowed disabled:opacity-50",
         )}
       />
-      <button
-        onClick={submit}
-        disabled={disabled}
-        className={cn(
-          "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground",
-          "hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50",
+      <Button onClick={submit} disabled={disabled} className="h-auto py-3 px-6">
+        {disabled ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Wait
+          </>
+        ) : (
+          "Send"
         )}
-      >
-        Send
-      </button>
+      </Button>
     </div>
   );
 }

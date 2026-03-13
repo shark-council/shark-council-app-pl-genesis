@@ -1,5 +1,8 @@
 "use client";
 
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { ChatMessage as ChatMessageType } from "@/types/chat";
 import { ClassValue } from "clsx";
@@ -79,25 +82,46 @@ export function CouncilChat(props: { className?: ClassValue }) {
   }
 
   return (
-    <div className={cn("flex flex-col", props.className)}>
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-        {messages.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground pt-12">
-            Ask a question to start the council discussion.
-          </p>
-        )}
-        {messages.map((m) => (
-          <CouncilChatMessage key={m.id} message={m} />
-        ))}
-        {isLoading && (
-          <p className="text-xs text-muted-foreground animate-pulse pl-3">
-            Council is deliberating...
-          </p>
-        )}
-        <div ref={bottomRef} />
-      </div>
+    <Card
+      className={cn(
+        "flex flex-col h-full flex-1 overflow-hidden",
+        props.className,
+      )}
+    >
+      <CardContent className="flex-1 overflow-hidden p-0">
+        <ScrollArea className="h-full px-6 py-4">
+          <div className="space-y-4">
+            {messages.length === 0 && (
+              <div className="flex flex-col items-center justify-center pt-16 pb-8 text-center text-muted-foreground">
+                <p className="text-sm">
+                  Ask a question to start the council discussion
+                </p>
+              </div>
+            )}
 
-      <CouncilChatInput onSend={sendMessage} disabled={isLoading} />
-    </div>
+            {messages.map((m) => (
+              <CouncilChatMessage key={m.id} message={m} />
+            ))}
+
+            {isLoading && (
+              <div className="flex items-start gap-3 p-4">
+                <Skeleton className="size-8 rounded-full" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-37.5" />
+                  <Skeleton className="h-4 w-full max-w-100" />
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+        </ScrollArea>
+      </CardContent>
+
+      <CardFooter className="border-t p-4 border-border/50 bg-background/50">
+        <div className="w-full">
+          <CouncilChatInput onSend={sendMessage} disabled={isLoading} />
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
