@@ -2,7 +2,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ChatMessage as ChatMessageType } from "@/types/chat";
-import { User, Bot } from "lucide-react";
+import { Bot, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const ROLE_LABELS: Record<ChatMessageType["role"], string> = {
   user: "You",
@@ -29,6 +31,7 @@ const ROLE_BADGE_STYLES: Record<ChatMessageType["role"], string> = {
 export function CouncilChatMessage({ message }: { message: ChatMessageType }) {
   const isFinal = message.type === "final";
   const isToolCall = message.type === "tool-call";
+  const rendersMarkdown = message.role !== "user";
 
   return (
     <div
@@ -77,9 +80,62 @@ export function CouncilChatMessage({ message }: { message: ChatMessageType }) {
           )}
         </div>
 
-        <div className="text-sm leading-relaxed whitespace-pre-wrap mt-1">
-          {message.content}
-        </div>
+        {rendersMarkdown ? (
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ children }) => (
+                <p className="text-sm leading-relaxed mt-1">{children}</p>
+              ),
+              ul: ({ children }) => (
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed">
+                  {children}
+                </ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm leading-relaxed">
+                  {children}
+                </ol>
+              ),
+              li: ({ children }) => <li>{children}</li>,
+              strong: ({ children }) => (
+                <strong className="font-semibold">{children}</strong>
+              ),
+              em: ({ children }) => <em className="italic">{children}</em>,
+              code: ({ children }) => (
+                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+                  {children}
+                </code>
+              ),
+              pre: ({ children }) => (
+                <pre className="mt-2 overflow-x-auto rounded-md border bg-muted/50 p-3 text-xs">
+                  {children}
+                </pre>
+              ),
+              a: ({ href, children }) => (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary underline underline-offset-2"
+                >
+                  {children}
+                </a>
+              ),
+              blockquote: ({ children }) => (
+                <blockquote className="mt-2 border-l-2 border-border pl-3 text-muted-foreground">
+                  {children}
+                </blockquote>
+              ),
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
+        ) : (
+          <div className="text-sm leading-relaxed whitespace-pre-wrap mt-1">
+            {message.content}
+          </div>
+        )}
       </div>
     </div>
   );
