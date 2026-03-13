@@ -5,7 +5,7 @@ export function CouncilChatHeroCard(props: { className?: ClassValue }) {
   return (
     <div
       className={cn(
-        "bg-secondary bg-cover bg-center bg-no-repeat rounded-2xl p-4",
+        "bg-secondary bg-cover bg-center bg-no-repeat rounded-2xl px-8 py-6",
         props.className,
       )}
       style={{ backgroundImage: `url("/images/background-accent.png")` }}
