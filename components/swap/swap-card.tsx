@@ -11,6 +11,8 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 // ── Minimal ABIs ────────────────────────────────────────────────────────────
 
@@ -98,7 +100,10 @@ function applySlippage(amount: bigint): bigint {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-export function SwapCard() {
+export function SwapCard(props?: { mode?: "default" | "embedded" }) {
+  const mode = props?.mode ?? "default";
+  const isEmbedded = mode === "embedded";
+
   const { address, isConnected } = useAccount();
 
   const [tokenIn, setTokenIn] = useState<Token>(TOKENS[0]);
@@ -183,6 +188,7 @@ export function SwapCard() {
       setStep("idle");
       resetWrite();
     } else if (step === "swapping") {
+      toast.success("Swap completed successfully");
       setAmountIn("");
       setStep("idle");
       resetWrite();
@@ -255,13 +261,39 @@ export function SwapCard() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900 p-6 shadow-2xl">
-      <h2 className="mb-6 text-base font-semibold text-zinc-300">Swap</h2>
+    <div
+      className={cn(
+        "w-full rounded-2xl border p-6",
+        isEmbedded
+          ? "max-w-none border-border bg-card shadow-sm"
+          : "max-w-md border-white/10 bg-zinc-900 shadow-2xl",
+      )}
+    >
+      <h2
+        className={cn(
+          "mb-6 text-base font-semibold",
+          isEmbedded ? "text-foreground" : "text-zinc-300",
+        )}
+      >
+        Swap
+      </h2>
 
       {/* From */}
-      <div className="rounded-xl bg-zinc-800 p-4">
+      <div
+        className={cn(
+          "rounded-xl p-4",
+          isEmbedded ? "bg-muted/60" : "bg-zinc-800",
+        )}
+      >
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs text-zinc-400">From</span>
+          <span
+            className={cn(
+              "text-xs",
+              isEmbedded ? "text-muted-foreground" : "text-zinc-400",
+            )}
+          >
+            From
+          </span>
           <TokenSelector
             selected={tokenIn}
             onChange={(t) => {
@@ -277,7 +309,12 @@ export function SwapCard() {
           placeholder="0.0"
           value={amountIn}
           onChange={(e) => setAmountIn(e.target.value)}
-          className="w-full bg-transparent text-2xl font-semibold text-white outline-none placeholder:text-zinc-600"
+          className={cn(
+            "w-full bg-transparent text-2xl font-semibold outline-none",
+            isEmbedded
+              ? "text-foreground placeholder:text-muted-foreground"
+              : "text-white placeholder:text-zinc-600",
+          )}
         />
       </div>
 
@@ -286,7 +323,12 @@ export function SwapCard() {
         <button
           type="button"
           onClick={flipTokens}
-          className="rounded-full bg-zinc-800 p-2 text-zinc-400 hover:bg-zinc-700 hover:text-white transition-colors"
+          className={cn(
+            "rounded-full p-2 transition-colors",
+            isEmbedded
+              ? "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white",
+          )}
           aria-label="Flip tokens"
         >
           <ArrowDownUp className="h-4 w-4" />
@@ -294,9 +336,21 @@ export function SwapCard() {
       </div>
 
       {/* To */}
-      <div className="rounded-xl bg-zinc-800 p-4">
+      <div
+        className={cn(
+          "rounded-xl p-4",
+          isEmbedded ? "bg-muted/60" : "bg-zinc-800",
+        )}
+      >
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs text-zinc-400">To (estimated)</span>
+          <span
+            className={cn(
+              "text-xs",
+              isEmbedded ? "text-muted-foreground" : "text-zinc-400",
+            )}
+          >
+            To (estimated)
+          </span>
           <TokenSelector
             selected={tokenOut}
             onChange={setTokenOut}
@@ -304,11 +358,29 @@ export function SwapCard() {
           />
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-semibold text-white">
+          <span
+            className={cn(
+              "text-2xl font-semibold",
+              isEmbedded ? "text-foreground" : "text-white",
+            )}
+          >
             {isQuotePending && parsedAmountIn ? (
-              <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
+              <Loader2
+                className={cn(
+                  "h-6 w-6 animate-spin",
+                  isEmbedded ? "text-muted-foreground" : "text-zinc-500",
+                )}
+              />
             ) : (
-              formattedQuote || <span className="text-zinc-600">0.0</span>
+              formattedQuote || (
+                <span
+                  className={cn(
+                    isEmbedded ? "text-muted-foreground" : "text-zinc-600",
+                  )}
+                >
+                  0.0
+                </span>
+              )
             )}
           </span>
         </div>
@@ -316,20 +388,35 @@ export function SwapCard() {
 
       {/* Details */}
       {quotedAmountOut !== undefined && parsedAmountIn && !isQuoteError && (
-        <div className="mt-3 rounded-lg bg-zinc-800/50 px-4 py-3 text-xs text-zinc-400 space-y-1">
+        <div
+          className={cn(
+            "mt-3 rounded-lg px-4 py-3 text-xs space-y-1",
+            isEmbedded
+              ? "bg-muted/40 text-muted-foreground"
+              : "bg-zinc-800/50 text-zinc-400",
+          )}
+        >
           <div className="flex justify-between">
             <span>Fee tier</span>
-            <span className="text-zinc-300">
+            <span
+              className={cn(isEmbedded ? "text-foreground" : "text-zinc-300")}
+            >
               {(DEFAULT_FEE / 10000).toFixed(2)}%
             </span>
           </div>
           <div className="flex justify-between">
             <span>Slippage tolerance</span>
-            <span className="text-zinc-300">0.50%</span>
+            <span
+              className={cn(isEmbedded ? "text-foreground" : "text-zinc-300")}
+            >
+              0.50%
+            </span>
           </div>
           <div className="flex justify-between">
             <span>Min received</span>
-            <span className="text-zinc-300">
+            <span
+              className={cn(isEmbedded ? "text-foreground" : "text-zinc-300")}
+            >
               {formatUnits(applySlippage(quotedAmountOut), tokenOut.decimals)}{" "}
               {tokenOut.symbol}
             </span>

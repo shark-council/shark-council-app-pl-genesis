@@ -1,26 +1,27 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { SwapCard } from "@/components/swap/swap-card";
 import { cn } from "@/lib/utils";
-import { ChatMessage as ChatMessageType } from "@/types/chat";
+import { ChatMessageRole, ChatUiMessage } from "@/types/chat";
 import { Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-const ROLE_LABELS: Record<ChatMessageType["role"], string> = {
+const ROLE_LABELS: Record<ChatMessageRole, string> = {
   user: "You",
   orchestrator: "Orchestrator",
   "sentiment-analyst": "Sentiment Analyst",
   "technical-analyst": "Technical Analyst",
 };
 
-const ROLE_AVATARS: Record<ChatMessageType["role"], string | null> = {
+const ROLE_AVATARS: Record<ChatMessageRole, string | null> = {
   user: null,
   orchestrator: "/images/sharks/great-white-shark.png",
   "technical-analyst": "/images/sharks/hammerhead-shark.png",
   "sentiment-analyst": "/images/sharks/megalodon-shark.png",
 };
 
-const ROLE_BADGE_STYLES: Record<ChatMessageType["role"], string> = {
+const ROLE_BADGE_STYLES: Record<ChatMessageRole, string> = {
   user: "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30",
   orchestrator: "bg-purple-500/20 text-purple-400 hover:bg-purple-500/30",
   "sentiment-analyst": "bg-green-500/20 text-green-400 hover:bg-green-500/30",
@@ -28,9 +29,10 @@ const ROLE_BADGE_STYLES: Record<ChatMessageType["role"], string> = {
     "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30",
 };
 
-export function CouncilChatMessage({ message }: { message: ChatMessageType }) {
+export function CouncilChatMessage({ message }: { message: ChatUiMessage }) {
   const isFinal = message.type === "final";
   const isToolCall = message.type === "tool-call";
+  const isSwapCard = message.type === "swap-card";
   const rendersMarkdown = message.role !== "user";
 
   return (
@@ -78,9 +80,16 @@ export function CouncilChatMessage({ message }: { message: ChatMessageType }) {
               Thinking / Calling tool...
             </span>
           )}
+          {isSwapCard && (
+            <span className="text-xs text-muted-foreground font-medium">
+              Execute
+            </span>
+          )}
         </div>
 
-        {rendersMarkdown ? (
+        {isSwapCard ? (
+          <SwapCard mode="embedded" />
+        ) : rendersMarkdown ? (
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{

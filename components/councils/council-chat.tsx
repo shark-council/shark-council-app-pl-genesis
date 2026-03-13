@@ -4,14 +4,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { ChatMessage as ChatMessageType } from "@/types/chat";
+import { ChatMessage, ChatUiMessage } from "@/types/chat";
 import { ClassValue } from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { CouncilChatInput } from "./council-chat-input";
 import { CouncilChatMessage } from "./council-chat-message";
 
 export function CouncilChat(props: { className?: ClassValue }) {
-  const [messages, setMessages] = useState<ChatMessageType[]>([]);
+  const [messages, setMessages] = useState<ChatUiMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +20,7 @@ export function CouncilChat(props: { className?: ClassValue }) {
   }, [messages]);
 
   async function sendMessage(text: string) {
-    const userMessage: ChatMessageType = {
+    const userMessage: ChatUiMessage = {
       id: crypto.randomUUID(),
       role: "user",
       content: text,
@@ -38,7 +38,10 @@ export function CouncilChat(props: { className?: ClassValue }) {
           m.role === "user" ||
           (m.role === "orchestrator" && m.type === "final"),
       )
-      .map(({ role, content, type }) => ({ role, content, type }));
+      .map(({ role, content, type }) => ({ role, content, type })) as Pick<
+      ChatMessage,
+      "role" | "content" | "type"
+    >[];
 
     try {
       const response = await fetch("/api/agents/orchestrator", {
@@ -66,11 +69,24 @@ export function CouncilChat(props: { className?: ClassValue }) {
           const raw = line.slice(6);
           if (raw === "[DONE]") continue;
           try {
-            const parsed = JSON.parse(raw) as Omit<ChatMessageType, "id">;
-            setMessages((prev) => [
-              ...prev,
-              { ...parsed, id: crypto.randomUUID() },
-            ]);
+            const parsed = JSON.parse(raw) as Omit<ChatMessage, "id">;
+            setMessages((prev) => {
+              const next: ChatUiMessage[] = [
+                ...prev,
+                { ...parsed, id: crypto.randomUUID() },
+              ];
+
+              if (parsed.role === "orchestrator" && parsed.type === "final") {
+                next.push({
+                  id: crypto.randomUUID(),
+                  role: "orchestrator",
+                  type: "swap-card",
+                  content: "",
+                });
+              }
+
+              return next;
+            });
           } catch {
             // ignore malformed lines
           }
