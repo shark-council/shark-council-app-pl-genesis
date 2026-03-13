@@ -45,7 +45,6 @@ type DebateRound = {
   instruction: string;
 };
 
-// TODO: Add more rounds
 const DEBATE_ROUNDS: DebateRound[] = [
   {
     agent: "sentiment-analyst",
