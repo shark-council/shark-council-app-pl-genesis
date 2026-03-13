@@ -4,6 +4,25 @@ import { BaseMessage, HumanMessage, SystemMessage } from "langchain";
 
 const BASE_URL = process.env.BASE_URL;
 
+function getDelayMsFromEnv(key: string, fallbackMs: number): number {
+  const value = process.env[key];
+  if (!value) return fallbackMs;
+
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) return fallbackMs;
+
+  return parsed;
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+const THINKING_DELAY_MS = getDelayMsFromEnv("AGENT_THINKING_DELAY_MS", 2200);
+const MESSAGE_DELAY_MS = getDelayMsFromEnv("AGENT_MESSAGE_DELAY_MS", 1400);
+
 const model = new ChatOpenAI({
   model: "google/gemini-3-flash-preview",
   apiKey: process.env.OPEN_ROUTER_API_KEY,
@@ -131,6 +150,8 @@ export async function* streamOrchestrator(
       content: round.thinkingLabel,
     })}\n\n`;
 
+    await delay(THINKING_DELAY_MS);
+
     const prompt = buildAgentPrompt(
       userTopic,
       debateHistory,
@@ -145,6 +166,8 @@ export async function* streamOrchestrator(
       type: "message",
       content: response,
     })}\n\n`;
+
+    await delay(MESSAGE_DELAY_MS);
   }
 
   // Orchestrator delivers the verdict
@@ -153,6 +176,8 @@ export async function* streamOrchestrator(
     type: "tool-call",
     content: "The Council deliberates...",
   })}\n\n`;
+
+  await delay(THINKING_DELAY_MS);
 
   const verdictPrompt = buildVerdictPrompt(userTopic, debateHistory);
   const verdictResponse = await model.invoke([
