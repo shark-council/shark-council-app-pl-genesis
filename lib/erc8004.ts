@@ -9,8 +9,9 @@ import {
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
+const PINATA_JWT_TOKEN = process.env.ERC8004_PINATA_JWT_TOKEN as string;
 const MANAGER_PRIVATE_KEY = process.env.ERC8004_MANAGER_PRIVATE_KEY as string;
-const MANAGER_ADDRESS = process.env.MANAGER_ADDRESS as string;
+const MANAGER_ADDRESS = process.env.ERC8004_MANAGER_ADDRESS as string;
 const REVIEWER_PRIVATE_KEY = process.env.ERC8004_REVIEWER_PRIVATE_KEY as string;
 
 export function getAgent0Sdk(privateKey: string): SDK {
@@ -18,6 +19,8 @@ export function getAgent0Sdk(privateKey: string): SDK {
     chainId: erc8004Config.chain.id,
     rpcUrl: erc8004Config.chain.rpcUrls.default.http[0] as string,
     privateKey: privateKey,
+    ipfs: "pinata",
+    pinataJwt: PINATA_JWT_TOKEN,
   });
 }
 
@@ -58,11 +61,20 @@ export async function registerErc8004Agent(
 export async function giveErc8004AgentFeedback(
   agentId: string,
   value: number,
+  text?: string,
 ): Promise<Feedback> {
   console.log("[ERC-8004] Giving feedback to agent...");
 
   const sdk = getAgent0Sdk(REVIEWER_PRIVATE_KEY);
-  const tx = await sdk.giveFeedback(agentId, value);
+  const feedbackFile = text ? sdk.prepareFeedbackFile({ text }) : undefined;
+  const tx = await sdk.giveFeedback(
+    agentId,
+    value,
+    undefined,
+    undefined,
+    undefined,
+    feedbackFile,
+  );
   console.log(`[ERC-8004] TX: ${tx.hash}`);
 
   const { result: feedback } = await tx.waitConfirmed();

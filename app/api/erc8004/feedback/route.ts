@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     const bodySchema = z.object({
       agentId: z.union([z.string(), z.number()]).transform(String),
       value: z.number(),
+      text: z.string().trim().min(1).optional(),
     });
 
     const body = await request.json();
@@ -20,9 +21,9 @@ export async function POST(request: NextRequest) {
       return createFailedApiResponse({ message: "Invalid request body" }, 400);
     }
 
-    const { agentId, value } = bodyParseResult.data;
+    const { agentId, value, text } = bodyParseResult.data;
 
-    const feedback = await giveErc8004AgentFeedback(agentId, value);
+    const feedback = await giveErc8004AgentFeedback(agentId, value, text);
 
     return createSuccessApiResponse({ feedback });
   } catch (error) {
