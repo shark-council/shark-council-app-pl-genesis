@@ -102,7 +102,7 @@ export function SwapCard() {
   const { address, isConnected } = useAccount();
 
   const [tokenIn, setTokenIn] = useState<Token>(TOKENS[0]);
-  const [tokenOut, setTokenOut] = useState<Token>(TOKENS[2]);
+  const [tokenOut, setTokenOut] = useState<Token>(TOKENS[1]);
   const [amountIn, setAmountIn] = useState("");
   const [step, setStep] = useState<"idle" | "approving" | "swapping">("idle");
 
