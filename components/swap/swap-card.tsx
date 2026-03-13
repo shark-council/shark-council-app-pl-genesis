@@ -1,6 +1,6 @@
 "use client";
 
-import { TokenSelector } from "@/components/swap/TokenSelector";
+import { TokenSelector } from "@/components/swap/token-selector";
 import { CONTRACTS, DEFAULT_FEE, TOKENS, type Token } from "@/lib/tokens";
 import { ArrowDownUp, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";

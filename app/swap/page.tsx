@@ -1,4 +1,4 @@
-import { SwapCard } from "@/components/swap/SwapCard";
+import { SwapCard } from "@/components/swap/swap-card";
 
 export default function SwapPage() {
   return (
