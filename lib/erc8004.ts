@@ -9,11 +9,15 @@ import {
 import { erc8004Config } from "../config/erc8004";
 import { uploadContentToStoracha } from "./storacha";
 
-export function getAgent0Sdk(): SDK {
+const MANAGER_PRIVATE_KEY = process.env.ERC8004_MANAGER_PRIVATE_KEY as string;
+const MANAGER_ADDRESS = process.env.MANAGER_ADDRESS as string;
+const REVIEWER_PRIVATE_KEY = process.env.ERC8004_REVIEWER_PRIVATE_KEY as string;
+
+export function getAgent0Sdk(privateKey: string): SDK {
   return new SDK({
     chainId: erc8004Config.chain.id,
     rpcUrl: erc8004Config.chain.rpcUrls.default.http[0] as string,
-    privateKey: process.env.ERC8004_OWNER_PRIVATE_KEY,
+    privateKey: privateKey,
   });
 }
 
@@ -25,7 +29,7 @@ export async function registerErc8004Agent(
 ): Promise<RegistrationFile> {
   console.log("[ERC-8004] Registering agent...");
 
-  const sdk = getAgent0Sdk();
+  const sdk = getAgent0Sdk(MANAGER_PRIVATE_KEY);
   const agent = sdk.createAgent(name, description, image);
   const registrationFile = agent.getRegistrationFile();
   registrationFile.endpoints.push({
@@ -57,7 +61,7 @@ export async function giveErc8004AgentFeedback(
 ): Promise<Feedback> {
   console.log("[ERC-8004] Giving feedback to agent...");
 
-  const sdk = getAgent0Sdk();
+  const sdk = getAgent0Sdk(REVIEWER_PRIVATE_KEY);
   const tx = await sdk.giveFeedback(agentId, value);
   console.log(`[ERC-8004] TX: ${tx.hash}`);
 
@@ -70,7 +74,7 @@ export async function giveErc8004AgentFeedback(
 export async function getErc8004Agents(): Promise<AgentSummary[]> {
   console.log("[ERC-8004] Getting agents...");
 
-  const sdk = getAgent0Sdk();
+  const sdk = getAgent0Sdk(MANAGER_PRIVATE_KEY);
 
   const subgraphClient = sdk.subgraphClient;
   if (!subgraphClient) {
@@ -79,7 +83,7 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   }
 
   const agentSummaries = await subgraphClient.getAgents({
-    where: { owner: process.env.ERC8004_OWNER_ADDRESS as string },
+    where: { owner: MANAGER_ADDRESS },
   });
 
   // `createdAt` may be in seconds depending on subgraph mapping; normalize to ms.
@@ -102,18 +106,4 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   );
 
   return filteredAgentSummaries;
-}
-
-export async function getErc8004AgentReputationSummary(
-  agentId: string,
-): Promise<{ count: number; averageValue: number }> {
-  console.log("[ERC-8004] Getting agent reputation summary...");
-
-  const sdk = getAgent0Sdk();
-  const { count, averageValue } = await sdk.getReputationSummary(agentId);
-  console.log(
-    `[ERC-8004] Agent ${agentId} has ${count} feedback entries with an average value of ${averageValue}`,
-  );
-
-  return { count, averageValue };
 }
