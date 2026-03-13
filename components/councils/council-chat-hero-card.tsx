@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 
-// TODO: Add description
 export function CouncilChatHeroCard(props: { className?: ClassValue }) {
   return (
     <div
@@ -14,7 +13,10 @@ export function CouncilChatHeroCard(props: { className?: ClassValue }) {
       <h2 className="text-3xl font-bold tracking-tight text-accent-foreground">
         Consult the Council
       </h2>
-      <p className="text-accent-foreground">...</p>
+      <p className="text-accent-foreground">
+        Debate your trade idea with AI agents for an instant risk verdict and
+        execution
+      </p>
     </div>
   );
 }
