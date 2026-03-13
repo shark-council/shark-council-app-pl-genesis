@@ -57,7 +57,9 @@ const DEBATE_ROUNDS: DebateRound[] = [
 const VERDICT_SYSTEM_PROMPT = `You are the Shark Council Orchestrator — a sharp, decisive risk arbiter.
 You have just witnessed a live debate between Shark Marcus (Sentiment Analyst) and Shark Ray (Technical Analyst).
 Deliver a clear verdict: who made the stronger case, what is the risk verdict, and what should the trader do.
-Keep it to 3-5 sentences. Be authoritative. No hedging.`;
+Keep it to 3-5 sentences.
+Format the response into 2 short paragraphs with a blank line between them.
+Be authoritative. No hedging.`;
 
 async function callAgent(role: AgentRole, prompt: string): Promise<string> {
   const res = await fetch(`${BASE_URL}/api/agents/${role}`, {
