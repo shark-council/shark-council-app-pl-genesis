@@ -81,9 +81,27 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   const agentSummaries = await subgraphClient.getAgents({
     where: { owner: process.env.ERC8004_OWNER_ADDRESS as string },
   });
-  console.log(`[ERC-8004] Found ${agentSummaries.length} agents`);
 
-  return agentSummaries;
+  // `createdAt` may be in seconds depending on subgraph mapping; normalize to ms.
+  const minCreatedAtMs = erc8004Config.minCreatedAt.getTime();
+  const filteredAgentSummaries = agentSummaries.filter((agentSummary) => {
+    if (agentSummary.createdAt == null) {
+      return false;
+    }
+
+    const createdAtMs =
+      agentSummary.createdAt < 1_000_000_000_000
+        ? agentSummary.createdAt * 1000
+        : agentSummary.createdAt;
+
+    return createdAtMs >= minCreatedAtMs;
+  });
+
+  console.log(
+    `[ERC-8004] Found ${filteredAgentSummaries.length}/${agentSummaries.length} agents after minCreatedAt filter`,
+  );
+
+  return filteredAgentSummaries;
 }
 
 export async function getErc8004AgentReputationSummary(
