@@ -15,7 +15,7 @@ const ROLE_BADGE_STYLES: Record<ChatMessageType["role"], string> = {
   "technical-analyst": "bg-orange-500/20 text-orange-400 border-orange-500/30",
 };
 
-export function ChatMessage({ message }: { message: ChatMessageType }) {
+export function CouncilChatMessage({ message }: { message: ChatMessageType }) {
   const isFinal = message.type === "final";
   const isToolCall = message.type === "tool-call";
 

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
 
-export function ChatInput({
+export function CouncilChatInput({
   onSend,
   disabled,
 }: {

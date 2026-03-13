@@ -1,11 +1,13 @@
 "use client";
 
-import { ChatInput } from "@/components/chat/ChatInput";
-import { ChatMessage } from "@/components/chat/ChatMessage";
+import { cn } from "@/lib/utils";
 import { ChatMessage as ChatMessageType } from "@/types/chat";
+import { ClassValue } from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { CouncilChatInput } from "./council-chat-input";
+import { CouncilChatMessage } from "./council-chat-message";
 
-export default function ChatPage() {
+export function CouncilChat(props: { className?: ClassValue }) {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -77,14 +79,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen max-w-3xl mx-auto">
-      <header className="border-b border-border px-4 py-3">
-        <h1 className="text-lg font-semibold">🦈 Shark Council</h1>
-        <p className="text-xs text-muted-foreground">
-          Orchestrator · Sentiment Analyst · Technical Analyst
-        </p>
-      </header>
-
+    <div className={cn("flex flex-col", props.className)}>
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {messages.length === 0 && (
           <p className="text-center text-sm text-muted-foreground pt-12">
@@ -92,7 +87,7 @@ export default function ChatPage() {
           </p>
         )}
         {messages.map((m) => (
-          <ChatMessage key={m.id} message={m} />
+          <CouncilChatMessage key={m.id} message={m} />
         ))}
         {isLoading && (
           <p className="text-xs text-muted-foreground animate-pulse pl-3">
@@ -102,7 +97,7 @@ export default function ChatPage() {
         <div ref={bottomRef} />
       </div>
 
-      <ChatInput onSend={sendMessage} disabled={isLoading} />
+      <CouncilChatInput onSend={sendMessage} disabled={isLoading} />
     </div>
   );
 }
