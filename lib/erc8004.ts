@@ -71,12 +71,19 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
   console.log("[ERC-8004] Getting agents...");
 
   const sdk = getAgent0Sdk();
-  const agentSummaries = await sdk.subgraphClient?.getAgents({
+
+  const subgraphClient = sdk.subgraphClient;
+  if (!subgraphClient) {
+    console.error("[ERC-8004] Subgraph client not initialized");
+    return [];
+  }
+
+  const agentSummaries = await subgraphClient.getAgents({
     where: { owner: process.env.ERC8004_OWNER_ADDRESS as string },
   });
-  console.log(`[ERC-8004] Found ${(agentSummaries || []).length} agents`);
+  console.log(`[ERC-8004] Found ${agentSummaries.length} agents`);
 
-  return agentSummaries || [];
+  return agentSummaries;
 }
 
 export async function getErc8004AgentReputationSummary(
