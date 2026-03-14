@@ -6,7 +6,7 @@
 
 # Project Overview
 
-This is a Next.js prototype app for the Shark Council project.
+This is a Next.js app for the Shark Council project.
 
 Shark Council is a platform where you bring your trade ideas to be debated live by specialized AI agents—built by top developers—to deliver actionable risk verdicts and instant DEX execution.
 

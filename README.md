@@ -1,4 +1,4 @@
-# 🦈 Shark Council - App Prototype
+# 🦈 Shark Council - App - PL_Genesis
 
 ## ⚡ About
 
