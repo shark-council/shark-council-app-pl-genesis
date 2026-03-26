@@ -20,7 +20,7 @@ export function IndexActivitySection(props: { className?: ClassValue }) {
         <Item variant="outline">
           <ItemMedia variant="icon">
             <Avatar className="size-10">
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 <BotIcon />
               </AvatarFallback>
             </Avatar>
@@ -32,7 +32,7 @@ export function IndexActivitySection(props: { className?: ClassValue }) {
         <Item variant="outline">
           <ItemMedia variant="icon">
             <Avatar className="size-10">
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 <MessagesSquareIcon />
               </AvatarFallback>
             </Avatar>
@@ -44,7 +44,7 @@ export function IndexActivitySection(props: { className?: ClassValue }) {
         <Item variant="outline">
           <ItemMedia variant="icon">
             <Avatar className="size-10">
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 <RefreshCwIcon />
               </AvatarFallback>
             </Avatar>
@@ -56,7 +56,7 @@ export function IndexActivitySection(props: { className?: ClassValue }) {
         <Item variant="outline">
           <ItemMedia variant="icon">
             <Avatar className="size-10">
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 <UsersIcon />
               </AvatarFallback>
             </Avatar>
