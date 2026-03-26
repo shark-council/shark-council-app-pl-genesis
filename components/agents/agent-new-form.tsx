@@ -13,13 +13,12 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Spinner } from "../ui/spinner";
 
-// TODO: Fix urls
 const AGENT_IMAGES = [
-  "https://shark-council.vercel.app/images/sharks/great-white-shark.png",
-  "https://shark-council.vercel.app/images/sharks/hammerhead-shark.png",
-  "https://shark-council.vercel.app/images/sharks/megalodon-shark.png",
-  "https://shark-council.vercel.app/images/sharks/tiger-shark.png",
-  "https://shark-council.vercel.app/images/sharks/whale-shark.png",
+  "https://shark-council-app-pl-genesis.vercel.app/images/sharks/great-white-shark.png",
+  "https://shark-council-app-pl-genesis.vercel.app/images/sharks/hammerhead-shark.png",
+  "https://shark-council-app-pl-genesis.vercel.app/images/sharks/megalodon-shark.png",
+  "https://shark-council-app-pl-genesis.vercel.app/images/sharks/tiger-shark.png",
+  "https://shark-council-app-pl-genesis.vercel.app/images/sharks/whale-shark.png",
 ];
 
 const schema = z.object({
