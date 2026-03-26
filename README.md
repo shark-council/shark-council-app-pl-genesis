@@ -4,7 +4,19 @@
 
 ...
 
+## 🌊 Workflow
+
+...
+
 ## 🔗 Artifacts
+
+...
+
+## 🛠️ Technologies
+
+...
+
+## 🗺️ Roadmap
 
 ...
 
@@ -26,6 +38,7 @@ OPEN_ROUTER_API_KEY=""
 STORACHA_SPACE_ID=""
 STORACHA_KEY=""
 STORACHA_PROOF=""
+ERC8004_PINATA_JWT_TOKEN=""
 ERC8004_MANAGER_ADDRESS=""
 ERC8004_MANAGER_PRIVATE_KEY=""
 ERC8004_REVIEWER_PRIVATE_KEY=""
