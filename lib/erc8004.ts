@@ -119,3 +119,17 @@ export async function getErc8004Agents(): Promise<AgentSummary[]> {
 
   return filteredAgentSummaries;
 }
+
+export async function getErc8004AgentFeedback(
+  agentId: string,
+): Promise<{ count: number; averageValue: number }> {
+  console.log("[ERC-8004] Getting agent feedback...");
+
+  const sdk = getAgent0Sdk(MANAGER_PRIVATE_KEY);
+  const { count, averageValue } = await sdk.getReputationSummary(agentId);
+  console.log(
+    `[ERC-8004] Agent ${agentId} has ${count} feedback entries with an average value of ${averageValue}`,
+  );
+
+  return { count, averageValue };
+}
