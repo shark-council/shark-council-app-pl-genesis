@@ -301,6 +301,7 @@ export function SwapCard(props?: { mode?: "default" | "embedded" }) {
               setAmountIn("");
             }}
             exclude={tokenOut}
+            variant={mode}
           />
         </div>
         <input
@@ -355,6 +356,7 @@ export function SwapCard(props?: { mode?: "default" | "embedded" }) {
             selected={tokenOut}
             onChange={setTokenOut}
             exclude={tokenIn}
+            variant={mode}
           />
         </div>
         <div className="flex items-center gap-2">
