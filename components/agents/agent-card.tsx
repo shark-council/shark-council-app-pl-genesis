@@ -16,6 +16,17 @@ export function AgentCard({ agent }: { agent: AgentSummary }) {
   const image = uriData?.image ?? agent.image;
 
   const explorerLink = `${erc8004Config.explorer}/${agent.agentId.split(":").pop()}`;
+  const stopPropagation = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  };
+
+  const stopSelectionHotkeys = (
+    event: React.KeyboardEvent<HTMLAnchorElement>,
+  ) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.stopPropagation();
+    }
+  };
 
   return (
     <div className="bg-card border rounded-2xl p-4">
@@ -38,6 +49,8 @@ export function AgentCard({ agent }: { agent: AgentSummary }) {
                 href={explorerLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={stopPropagation}
+                onKeyDown={stopSelectionHotkeys}
                 className="flex items-center gap-1 mt-4 text-sm text-primary hover:underline"
               >
                 ERC-8004 Explorer
