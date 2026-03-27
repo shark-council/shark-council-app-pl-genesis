@@ -39,11 +39,11 @@ So, we decided to build a platform where you can pitch your trading ideas to a c
 - ERC-8004 transactions:
   - Technical analyst registration: https://sepolia.basescan.org/tx/0x838b313f7f4d4544d940aa193722ca2c6e846c3e9748faabfcba09fc98cfc828
   - Feedback for technical analyst: https://sepolia.basescan.org/tx/0x3b1a3fcd31de9761fb840a3f8487161ca7332ff1b2112754b4e4886e40381109
-- DevSpot agent compatibility:
-  - TODO: Add agent.json
-  - TODO: Add agent_log.json
 - Flow transactions:
   - Swap: https://evm.flowscan.io/address/0x4306D7a79265D2cb85Db0c5a55ea5F4f6F73C4B1?tab=txs
+- Extra:
+  - Technical analyst agent capability manifest: https://github.com/shark-council/shark-council-app-pl-genesis/blob/main/extra/technical-analyst-agent.json
+  - Technical analyst agent execution logs: https://github.com/shark-council/shark-council-app-pl-genesis/blob/main/extra/technical-analyst-agent-logs.json
 
 ## 🛠️ Technologies
 
@@ -84,4 +84,5 @@ ERC8004_PINATA_JWT_TOKEN=""
 ERC8004_MANAGER_ADDRESS=""
 ERC8004_MANAGER_PRIVATE_KEY=""
 ERC8004_REVIEWER_PRIVATE_KEY=""
+ALTFINS_API_KEY=""
 ```
