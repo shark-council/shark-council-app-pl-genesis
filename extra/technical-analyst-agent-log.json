@@ -1,0 +1,273 @@
+{
+  "messages": [
+    {
+      "type": "human",
+      "id": "d6aecf9d-41ee-4efe-87d8-8803a2600ad0",
+      "content": "Is it a good idea to buy BTC right now?",
+      "additional_kwargs": {},
+      "response_metadata": {}
+    },
+    {
+      "type": "ai",
+      "id": "gen-1774615694-q3GqM6MXJ7mUjKn94e14",
+      "content": "",
+      "additional_kwargs": {
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "tool_get_technical_data_b09r6ewHjBe0f6sZQXyp",
+            "function": {
+              "name": "get_technical_data",
+              "arguments": {
+                "from": "2026-03-20T00:00:00.000Z",
+                "symbol": "BTC",
+                "timeInterval": "DAILY",
+                "to": "2026-03-27T00:00:00.000Z",
+                "analyticsType": "RSI14"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "index": 1,
+            "id": "tool_get_technical_data_phrlwFwY7OwAsLCRZI1M",
+            "function": {
+              "name": "get_technical_data",
+              "arguments": {
+                "to": "2026-03-27T00:00:00.000Z",
+                "analyticsType": "MACD",
+                "from": "2026-03-20T00:00:00.000Z",
+                "timeInterval": "DAILY",
+                "symbol": "BTC"
+              }
+            }
+          }
+        ]
+      },
+      "response_metadata": {
+        "tokenUsage": {
+          "promptTokens": 409,
+          "completionTokens": 136,
+          "totalTokens": 545
+        },
+        "finish_reason": "tool_calls",
+        "model_provider": "openai",
+        "model_name": "google/gemini-3-flash-preview-20251217"
+      },
+      "name": "model",
+      "tool_calls": [
+        {
+          "name": "get_technical_data",
+          "args": {
+            "from": "2026-03-20T00:00:00.000Z",
+            "symbol": "BTC",
+            "timeInterval": "DAILY",
+            "to": "2026-03-27T00:00:00.000Z",
+            "analyticsType": "RSI14"
+          },
+          "type": "tool_call",
+          "id": "tool_get_technical_data_b09r6ewHjBe0f6sZQXyp"
+        },
+        {
+          "name": "get_technical_data",
+          "args": {
+            "to": "2026-03-27T00:00:00.000Z",
+            "analyticsType": "MACD",
+            "from": "2026-03-20T00:00:00.000Z",
+            "timeInterval": "DAILY",
+            "symbol": "BTC"
+          },
+          "type": "tool_call",
+          "id": "tool_get_technical_data_phrlwFwY7OwAsLCRZI1M"
+        }
+      ],
+      "invalid_tool_calls": [],
+      "usage_metadata": {
+        "output_tokens": 136,
+        "input_tokens": 409,
+        "total_tokens": 545,
+        "input_token_details": {
+          "audio": 0,
+          "cache_read": 0
+        },
+        "output_token_details": {
+          "audio": 0,
+          "reasoning": 0
+        }
+      }
+    },
+    {
+      "type": "tool",
+      "id": "82ff0bc7-f506-44b3-9c7c-535087c4639c",
+      "content": {
+        "size": 7,
+        "number": 0,
+        "sort": [
+          {
+            "direction": "DESC",
+            "property": "timestamp",
+            "ignoreCase": false,
+            "nullHandling": "NATIVE"
+          }
+        ],
+        "content": [
+          {
+            "symbol": "BTC",
+            "time": "2026-03-26T00:00:00Z",
+            "value": "46.1188517045909927",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-25T00:00:00Z",
+            "value": "52.5180029342690793",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-24T00:00:00Z",
+            "value": "50.5537617985215552",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-23T00:00:00Z",
+            "value": "51.4388080470663663",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-22T00:00:00Z",
+            "value": "43.3884437816341828",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-21T00:00:00Z",
+            "value": "45.7634660006088673",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-20T00:00:00Z",
+            "value": "49.74652352140024",
+            "nonNumericalValue": null
+          }
+        ],
+        "totalElements": 7,
+        "numberOfElements": 7,
+        "totalPages": 1,
+        "first": true,
+        "last": true
+      },
+      "additional_kwargs": {},
+      "response_metadata": {},
+      "name": "get_technical_data",
+      "tool_call_id": "tool_get_technical_data_b09r6ewHjBe0f6sZQXyp",
+      "status": "success"
+    },
+    {
+      "type": "tool",
+      "id": "c38cdf43-3bcc-4c5f-aecd-895f9c9a32e9",
+      "content": {
+        "size": 7,
+        "number": 0,
+        "sort": [
+          {
+            "direction": "DESC",
+            "property": "timestamp",
+            "ignoreCase": false,
+            "nullHandling": "NATIVE"
+          }
+        ],
+        "content": [
+          {
+            "symbol": "BTC",
+            "time": "2026-03-26T00:00:00Z",
+            "value": "-22.31688059",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-25T00:00:00Z",
+            "value": "122.18765737",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-24T00:00:00Z",
+            "value": "48.63534622",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-23T00:00:00Z",
+            "value": "33.04486862",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-22T00:00:00Z",
+            "value": "-22.71845674",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-21T00:00:00Z",
+            "value": "215.954413",
+            "nonNumericalValue": null
+          },
+          {
+            "symbol": "BTC",
+            "time": "2026-03-20T00:00:00Z",
+            "value": "413.09689642",
+            "nonNumericalValue": null
+          }
+        ],
+        "totalElements": 7,
+        "numberOfElements": 7,
+        "totalPages": 1,
+        "first": true,
+        "last": true
+      },
+      "additional_kwargs": {},
+      "response_metadata": {},
+      "name": "get_technical_data",
+      "tool_call_id": "tool_get_technical_data_phrlwFwY7OwAsLCRZI1M",
+      "status": "success"
+    },
+    {
+      "type": "ai",
+      "id": "gen-1774615697-wC2397ipQujmudsseW05",
+      "content": "BTC is a trap. RSI dropped to 46.11 on March 26, and MACD just flipped negative at -22.31. Momentum is dying fast, so don't let the hype blind you to this clear breakdown. Stay out.",
+      "additional_kwargs": {},
+      "response_metadata": {
+        "tokenUsage": {
+          "promptTokens": 1208,
+          "completionTokens": 56,
+          "totalTokens": 1264
+        },
+        "finish_reason": "stop",
+        "model_provider": "openai",
+        "model_name": "google/gemini-3-flash-preview-20251217"
+      },
+      "name": "model",
+      "tool_calls": [],
+      "invalid_tool_calls": [],
+      "usage_metadata": {
+        "output_tokens": 56,
+        "input_tokens": 1208,
+        "total_tokens": 1264,
+        "input_token_details": {
+          "audio": 0,
+          "cache_read": 0
+        },
+        "output_token_details": {
+          "audio": 0,
+          "reasoning": 0
+        }
+      }
+    }
+  ]
+}

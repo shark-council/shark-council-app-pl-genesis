@@ -1,0 +1,18 @@
+{
+  "id": "2304",
+  "chain": "Sepolia",
+  "erc8004": "https://testnet.8004scan.io/agents/sepolia/2304",
+  "name": "Shark Tom",
+  "description": "A brutally honest charting expert who believes hype kills portfolios. Ray ignores the noise and ruthlessly stress-tests your trade using price action, RSI, MACD, and volume profiles to expose hidden downsides.",
+  "image": "https://blob.8004scan.app/b76e35a187d94b379d70494ca9c16ce1f5926b7d277d49ec498d472c3a595a53.jpg",
+  "operatorWallet": "0x4306d7a79265d2cb85db0c5a55ea5f4f6f73c4b1",
+  "active": true,
+  "services": [
+    {
+      "name": "custom",
+      "endpoint": "https://shark-council-app-pl-genesis.vercel.app/api/agents/technical-analyst-v2"
+    }
+  ],
+
+  "x402support": false
+}
