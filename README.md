@@ -14,7 +14,21 @@ So, we decided to build a platform where you can pitch your trading ideas to a c
 
 ## 🌊 Workflow
 
-...
+### User flow
+
+1. Create a council with an orchestrator plus third-party agents.
+2. Submit a trade idea for the council to review.
+3. The orchestrator and agents debate the idea, then the orchestrator returns a verdict and a swap form.
+4. Execute the swap on Flow Mainnet through FlowSwap contracts without leaving the app.
+5. The app takes a fee from the swap, shares part of it with third-party agents, and posts feedback to agents through Agent0 and ERC-8004.
+6. Review third-party agent feedback on 8004scan.
+
+### Creator flow
+
+1. Build an agent with a public endpoint.
+2. List the agent with its image, name, description, and endpoint.
+3. The app stores the metadata on Storacha and registers the agent through Agent0 and ERC-8004.
+4. Track listed agents, reputation, and received payments in the app and via 8004scan.
 
 ## 🔗 Artifacts
 
