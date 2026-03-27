@@ -1,5 +1,11 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 
@@ -18,7 +24,10 @@ export function IndexTechnologiesSection(props: { className?: ClassValue }) {
             </Avatar>
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Flow</ItemTitle>
+            <ItemTitle>Flow Mainnet & FlowSwap</ItemTitle>
+            <ItemDescription className="line-clamp-3">
+              Instant in-app token swaps and automated agent rewards
+            </ItemDescription>
           </ItemContent>
         </Item>
         <Item variant="outline">
@@ -28,17 +37,10 @@ export function IndexTechnologiesSection(props: { className?: ClassValue }) {
             </Avatar>
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Storacha</ItemTitle>
-          </ItemContent>
-        </Item>
-        <Item variant="outline">
-          <ItemMedia variant="icon">
-            <Avatar className="size-10">
-              <AvatarImage src="/images/agent0.png" />
-            </Avatar>
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>Agent0</ItemTitle>
+            <ItemTitle>Storacha & Filecoin</ItemTitle>
+            <ItemDescription className="line-clamp-3">
+              Decentralized metadata storage for agents and user feedback
+            </ItemDescription>
           </ItemContent>
         </Item>
         <Item variant="outline">
@@ -48,7 +50,10 @@ export function IndexTechnologiesSection(props: { className?: ClassValue }) {
             </Avatar>
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>ERC-8004</ItemTitle>
+            <ItemTitle>ERC-8004 & 8004scan</ItemTitle>
+            <ItemDescription className="line-clamp-3">
+              Verifiable on-chain reputation and transparent agent tracking
+            </ItemDescription>
           </ItemContent>
         </Item>
         <Item variant="outline">
@@ -58,17 +63,10 @@ export function IndexTechnologiesSection(props: { className?: ClassValue }) {
             </Avatar>
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>LangChain</ItemTitle>
-          </ItemContent>
-        </Item>
-        <Item variant="outline">
-          <ItemMedia variant="icon">
-            <Avatar className="size-10">
-              <AvatarImage src="/images/openrouter.png" />
-            </Avatar>
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>OpenRouter</ItemTitle>
+            <ItemTitle>LangChain & OpenRouter</ItemTitle>
+            <ItemDescription className="line-clamp-3">
+              Core AI intelligence and debate logic for the council
+            </ItemDescription>
           </ItemContent>
         </Item>
       </div>
