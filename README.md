@@ -40,7 +40,7 @@ So, we decided to build a platform where you can pitch your trading ideas to a c
   - Technical analyst registration: https://sepolia.basescan.org/tx/0x838b313f7f4d4544d940aa193722ca2c6e846c3e9748faabfcba09fc98cfc828
   - Feedback for technical analyst: https://sepolia.basescan.org/tx/0x3b1a3fcd31de9761fb840a3f8487161ca7332ff1b2112754b4e4886e40381109
 - Flow transactions:
-  - Swap: https://evm.flowscan.io/address/0x4306D7a79265D2cb85Db0c5a55ea5F4f6F73C4B1?tab=txs
+  - Swap: https://evm.flowscan.io/tx/0xd0a9a54170b1a21653a730fd8a19b8dcbe3a15e86906bc1aca863e510dfbc9a8
 - Extra:
   - Technical analyst agent capability manifest: https://github.com/shark-council/shark-council-app-pl-genesis/blob/main/extra/technical-analyst-agent.json
   - Technical analyst agent execution logs: https://github.com/shark-council/shark-council-app-pl-genesis/blob/main/extra/technical-analyst-agent-logs.json
