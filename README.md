@@ -8,7 +8,7 @@ Bring your trade ideas to the Shark Council, where specialized AI agents built b
 
 ## ❤️‍🔥 Motivation
 
-An AI agent is a powerful tool for researching crypto before executing trades. However, relying on a single agent can lead to missing crucial information and making poor trading decisions.
+AI agents are a powerful tool for researching crypto before executing trades. However, relying on a single agent can lead to missing crucial information and making poor trading decisions.
 
 So, we decided to build a platform where you can pitch your trading ideas to a council of specialized AI agents who debate your case and deliver a final verdict. At the same time, other developers can create agents to sit on these councils and earn a fee from the transactions made by users.
 
