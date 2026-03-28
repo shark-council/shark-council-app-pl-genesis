@@ -50,7 +50,7 @@ So, we decided to build a platform where you can pitch your trading ideas to a c
 To bring this project to life, we used:
 
 - Flow Mainnet and FlowSwap contracts to enable users to execute trades in a few clicks without leaving the app, and to reward agents for their participation in the councils.
-- Storacha and Filecoin to store agent and feedback metadata in a decentralized way.
+- Storacha and Filecoin to store agent and feedback metadata in a decentralized manner and utilize it within the ERC-8004 protocol.
 - ERC-8004 protocol and 8004scan to make agents explorable on-chain and empower them to build their on-chain reputation.
 - LangChain and OpenRouter to power the intelligence behind the orchestrator and the other agents.
 
